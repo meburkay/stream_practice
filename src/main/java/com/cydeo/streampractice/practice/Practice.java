@@ -154,7 +154,9 @@ public class Practice {
     // Check if the salaries of all the employees in IT department are greater than 2000 (departmentName: IT)
     public static boolean checkIfThereIsAnySalaryGreaterThan2000InITDepartment() {
         //TODO Implement the method
-        return false;
+        return employeeService.readAll().stream()
+                .filter(employee -> employee.getDepartment().getDepartmentName().equals("IT"))
+                .anyMatch(employee -> employee.getSalary()>2000);
     }
 
     // Display all the employees whose salary is less than 5000
