@@ -249,35 +249,54 @@ public class Practice {
     // Display the minimum salary an employee gets
     public static Long getMinSalary() throws Exception {
         //TODO Implement the method I need to study sorted and comparator topics. I did not understand the exact logic.
-        return employeeService.readAll().stream()
-                .sorted(Comparator.comparing(Employee::getSalary).reversed())
-                .findFirst().get().getSalary();
+        return employeeService.readAll().stream().min(Comparator.comparing(Employee::getSalary)).orElseThrow().getSalary();
 
 
     }
 
     // Display the employee(s) who gets the minimum salary
     public static List<Employee> getMinSalaryEmployee() {
-        //TODO Implement the method
-        return new ArrayList<>();
+        //TODO Implement the method +++
+        return employeeService.readAll().stream()
+                .filter(employee -> employee.getSalary() == employeeService.readAll().stream()
+                        .map(Employee::getSalary).min(Comparator.naturalOrder()).orElseThrow().longValue())
+                .collect(Collectors.toList());
     }
 
     // Display the second minimum salary an employee gets
     public static Long getSecondMinSalary() throws Exception {
-        //TODO Implement the method
-        return 1L;
+        //TODO Implement the method +++
+        return employeeService.readAll().stream()
+                .map(Employee::getSalary)
+                .distinct()
+                .sorted(Comparator.naturalOrder())
+                .collect(Collectors.toList()).get(1);
     }
 
     // Display the employee(s) who gets the second minimum salary
     public static List<Employee> getSecondMinSalaryEmployee() {
         //TODO Implement the method
-        return new ArrayList<>();
+        return employeeService.readAll().stream()
+                .filter(employee -> employee.getSalary() == employeeService.readAll().stream()
+                        .map(Employee::getSalary)
+                        .distinct()
+                        .sorted(Comparator.naturalOrder())
+                        .collect(Collectors.toList()).get(1).longValue())
+                .collect(Collectors.toList());
     }
 
     // Display the average salary of the employees
     public static Double getAverageSalary() {
         //TODO Implement the method
-        return 1d;
+        return  employeeService.readAll().stream()
+                        .map(Employee::getSalary)
+                        //.reduce(Long::sum)
+                        .reduce((a,b) -> (a+b))
+                        .orElseThrow().doubleValue() //I change long to double before dividing.
+                        /
+                        //(long) employeeService.readAll().size());
+                        employeeService.readAll().stream()
+                        .count();
     }
 
     // Display all the employees who are making more than average salary
