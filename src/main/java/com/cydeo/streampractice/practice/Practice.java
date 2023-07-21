@@ -203,7 +203,7 @@ public class Practice {
 
     // Display the max salary employee's job
     public static Job getMaxSalaryEmployeeJob() throws Exception {
-        //TODO Implement the method
+        //TODO Implement the method +++
         return employeeService.readAll().stream()
                 //.max(Comparator.comparing(Employee::getSalary)).get().getJob();
                 .sorted(Comparator.comparing(Employee::getSalary).reversed())
@@ -212,26 +212,48 @@ public class Practice {
 
     // Display the max salary in Americas Region
     public static Long getMaxSalaryInAmericasRegion() throws Exception {
-        //TODO Implement the method
-        return 1L;
+        //TODO Implement the method +++
+        return employeeService.readAll().stream()
+                .filter(employee -> employee.getDepartment().getLocation().getCountry().getRegion().getRegionName().equals("Americas"))
+                .max(Comparator.comparing(Employee::getSalary)).get().getSalary();
+
     }
 
     // Display the second maximum salary an employee gets
     public static Long getSecondMaxSalary() throws Exception {
-        //TODO Implement the method
-        return 1L;
+        //TODO Implement the method +++
+        return employeeService.readAll().stream()
+                .sorted(Comparator.comparing(Employee::getSalary).reversed())
+                .map(Employee::getSalary)
+                .distinct()
+                .collect(Collectors.toList()).get(1);
     }
 
     // Display the employee(s) who gets the second maximum salary
     public static List<Employee> getSecondMaxSalaryEmployee() {
-        //TODO Implement the method
-        return new ArrayList<>();
+                //TODO Implement the method +++
+       return employeeService.readAll().stream()
+               /*.filter(employee -> Objects.equals(employeeService.readAll().stream()
+                       .sorted(Comparator.comparing(Employee::getSalary).reversed())
+                       .map(Employee::getSalary)
+                       .distinct()
+                       .collect(Collectors.toList()).get(1), employee.getSalary()))*/
+                .filter(employee -> employee.getSalary() == employeeService.readAll().stream()
+                        .sorted(Comparator.comparing(Employee::getSalary).reversed())
+                        .map(Employee::getSalary)
+                        .distinct()
+                        .collect(Collectors.toList()).get(1).longValue())//we use longValue because == is working with primitive types correctly. If we did not use long instead of Long. It look at the objects and filter only that object.
+                .collect(Collectors.toList());
     }
 
     // Display the minimum salary an employee gets
     public static Long getMinSalary() throws Exception {
-        //TODO Implement the method
-        return 1L;
+        //TODO Implement the method I need to study sorted and comparator topics. I did not understand the exact logic.
+        return employeeService.readAll().stream()
+                .sorted(Comparator.comparing(Employee::getSalary).reversed())
+                .findFirst().get().getSalary();
+
+
     }
 
     // Display the employee(s) who gets the minimum salary
